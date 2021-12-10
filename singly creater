@@ -1,0 +1,166 @@
+#include<stdio.h>
+#include<malloc.h>
+
+struct node
+{
+	int data;
+	struct node *next;	
+};
+int count=0;
+
+struct node *append(struct node *head,int x)
+{
+	struct node *temp,*newnode;
+	newnode=(struct node *)malloc(sizeof(struct node));
+	newnode->data=x;
+	newnode->next=NULL;
+	if(head==NULL)
+	{
+		head=(struct node*)malloc(sizeof(struct node));
+		head->next=newnode;
+		count++;
+	}
+	else
+	{
+		temp=head;
+		while(temp->next!=NULL)
+		{
+			temp=temp->next;
+		}
+		temp->next=newnode;
+		count++;
+	}
+	return head;
+}
+
+struct node *display(struct node *head)
+{
+	struct node *temp;
+	if(head==NULL)
+	{
+		printf("\n---Create a list first---\n");
+	}
+	else
+	{	
+     for(temp=head->next;temp!=NULL;temp=temp->next)
+			printf("\t %d->",temp->data);
+	 printf("NULL");
+	}
+}
+
+struct node *insert(struct node *head,int x,int pos)
+{
+	struct node *temp,*newnode;
+	int i;
+	newnode=(struct node *)malloc(sizeof(struct node)); newnode->data=x;
+	newnode->next=NULL;
+	if(pos>=count)
+	{
+		for(temp=head;temp->next!=NULL;temp=temp->next); 
+		     temp->next=newnode;
+	 count++;
+	}
+	else
+	{
+		if(pos==1)
+		{
+			newnode->next=head->next;
+			head->next=newnode;
+			count++;
+		}
+		else
+		{
+			for(i=1,temp=head->next;i<pos-1;i++)
+			temp=temp->next;
+			newnode->next=temp->next;
+			temp->next=newnode;
+			count++;
+		}
+	}
+	return head;
+}
+
+struct node *search(struct node *head,int x)
+{
+	struct node *temp;
+	int flag=0;
+	for(temp=head;temp!=NULL;temp=temp->next)
+	{
+		if(x==temp->data)
+		{
+			flag=1;
+			break;
+		}
+	}
+	if(flag==1)
+	{
+		printf("\nElement is found\n");
+	}
+	else
+	{
+		printf("\nElement is not present\n");
+	}
+	
+}
+
+struct node *delete_pos(struct node *head,int pos)
+{
+	struct node *temp,*temp1;
+	int i;
+	if(pos>count)
+	{
+		printf("\nInvalid position\n");
+	}
+	else
+	{
+		if(pos==1)
+		{
+			temp=head->next;
+			head->next=temp->next;
+			temp->next=NULL;
+			free(temp1);
+			count--;
+		}
+		else
+		{
+			for(i=1,temp=head->next;i<count-1;i++)
+			{
+				temp=temp->next;
+			}
+			temp1=temp->next;
+			temp->next=temp1->next;
+			temp1->next=NULL;
+			free(temp1);
+			count--;
+		}
+	}
+	return head;
+	
+}
+
+struct node *delete_val(struct node *head,int x)
+{
+	struct node *temp,*temp1;
+	int i;
+	int flag=0;
+	temp=head;
+	while(temp!=NULL)
+	{
+		if(x==temp->next->data)
+		{
+			flag=1;
+			temp1=temp->next;
+			temp->next=temp1->next;
+			temp1->next=NULL;
+			free(temp1);
+			count--;
+			break;
+		}
+		temp=temp->next;
+	}
+	if(flag==1)
+		printf("\nElment is found and deleted\n");
+	else
+		printf("\nelement is not present\n");
+	return head;	
+}
